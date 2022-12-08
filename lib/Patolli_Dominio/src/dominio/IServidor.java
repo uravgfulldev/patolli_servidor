@@ -4,10 +4,12 @@
  */
 package dominio;
 
+import java.io.IOException;
+
 /**
  *
  * @author Hugo Rivera
  */
 public interface IServidor {
-    public void enviar(Partida partida);
+    public void enviar(Partida partida)throws IOException;
 }

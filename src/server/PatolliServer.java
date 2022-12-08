@@ -29,8 +29,9 @@ public class PatolliServer extends ServerSocket{
         while(true){
             Socket clientSocket = null;
             clientSocket = serverSocket.accept();
+            System.out.println(clientSocket.toString());
             System.out.println("estoy después de aceptar un cliente");
-           new Thread(new ServerManager(clientSocket)).start();
+            new Thread(new ServerManager(clientSocket)).start();
           
         
         }

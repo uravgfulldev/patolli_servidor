@@ -13,7 +13,7 @@ import java.util.Queue;
  * @author Hugo Rivera
  */
 public class Partida implements Serializable{
-
+    
     private Tablero tablero;
     private ArrayList<Jugador> jugadores;
     private Queue<Jugador> turnos;
@@ -200,9 +200,11 @@ public class Partida implements Serializable{
     public void setSaliendo(boolean saliendo) {
         this.saliendo = saliendo;
     }
-    
+
     @Override
     public String toString() {
-        return "Partida{" + "estado=" + estado + ", numCasillasAspa=" + numCasillasAspa + ", numFichasJugador=" + numFichasJugador + ", fondoApuesta=" + fondoApuesta + '}';
+        return "Partida{" + "tablero=" + tablero + ", jugadores=" + jugadores + ", turnos=" + turnos + ", jugadorTurno=" + jugadorTurno + ", ganador=" + ganador + ", estado=" + estado + ", fichaMovimiento=" + fichaMovimiento + ", avanzaPagando=" + avanzaPagando + ", repiteTurno=" + repiteTurno + ", pagaTodos=" + pagaTodos + ", recibeTodos=" + recibeTodos + ", saliendo=" + saliendo + ", cuantasApuestas=" + cuantasApuestas + ", numCasillasAspa=" + numCasillasAspa + ", numFichasJugador=" + numFichasJugador + ", fondoApuesta=" + fondoApuesta + ", valorApuesta=" + valorApuesta + ", cantidadDado=" + cantidadDado + ", cuantasMueve=" + cuantasMueve + '}';
     }
+    
+    
 }
