@@ -5,8 +5,8 @@
 package pipe_and_filters;
 
 import dominio.Partida;
-import server.ServerManager;
-import server.UpdateManager;
+import main.ServerManager;
+import main.UpdateManager;
 
 /**
  *

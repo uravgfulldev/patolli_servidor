@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package server;
+package main;
 
 import java.io.IOException;
 import pipe_and_filters.FilterMovimiento;
@@ -20,12 +20,7 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        PatolliServer ps=new PatolliServer();
-        ps.startToLisen();
-        FilterMovimiento filtroMovimiento=new FilterMovimiento();
-        UnionPipe pipe1=new UnionPipe(filtroMovimiento);
-        FinalPipe pipe2=new FinalPipe();
-        filtroMovimiento.doFilter(pipe1, pipe2);
+        new ServerManager();
     }
     
 }

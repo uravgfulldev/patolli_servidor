@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package server;
+package main;
 
 import dominio.IServidor;
 import dominio.Partida;
@@ -23,56 +23,51 @@ import pipe_and_filters.Sink;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.net.ServerSocket;
+import java.util.ArrayList;
 
 /**
  *
  * @author Hugo Rivera
  */
-public class ServerManager extends Thread implements UpdateManager,Filtrar,IServidor{
+public class ServerManager implements UpdateManager,Filtrar,IServidor{
     private Socket clienteSocket=null;
-    private List<Socket> listaSocketClientes;
+    private List<PatolliServer> listaClientes;
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
     private Partida partida_actual;
     private ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    boolean success;
-    public ServerManager(Socket socket)  throws IOException{
+    public ServerManager()  throws IOException{
         System.out.println("Constructor");
-        partida_actual=new Partida();
-        this.clienteSocket=socket;
-        this.inputStream=new DataInputStream(this.clienteSocket.getInputStream());
-        this.outputStream=new DataOutputStream(this.clienteSocket.getOutputStream());
-        success=true;
+        inicializar();
         
     }
-    
-    public int getNumConectados(){
-        return -1;
+    public void inicializar() throws IOException{
+        listaClientes=new ArrayList<>();
+        
+        startToLisen();
     }
-    public List<Socket> getClientes(){
-        return listaSocketClientes;
+    public int getNumConectados(){
+        return listaClientes.size();
+    }
+    public List<PatolliServer> getClientes(){
+        return listaClientes;
+    }
+    public void accionesConexion(PatolliServer conexion) {
+        this.listaClientes.add(conexion);
+        
     }
     @Override
-    public void run() {
-        boolean isConnected=true;
-        
-        while(isConnected){
-           
-                if(success){
-                    System.out.println("Conexion exitosa con: "+clienteSocket.getPort());
-                    //enviar(partida_actual);
-                    success=false;
-                }
-                actualizarPartida();
-                
-            
-        }
+    public void updateClientes(PatolliServer conexion) {
+        accionesConexion(conexion);
     }
-    
-    
     @Override
     public void update(Partida partida) {
-        partida_actual=partida;
+        try {
+            enviar(partida);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -83,9 +78,7 @@ public class ServerManager extends Thread implements UpdateManager,Filtrar,IServ
     @Override
     public void enviar(Partida partida)throws IOException {
             
-            this.outputStream.writeUTF(ConvertirObjectoString(partida));
-            outputStream.flush();
-            outputStream.close();
+            enviarPartidaAClientes(partida);
            // this.outputStream.flush();
             
     }
@@ -106,16 +99,32 @@ public class ServerManager extends Thread implements UpdateManager,Filtrar,IServ
         }
         return null;
     }
-    private void actualizarPartida(){
-        try {
-            if(inputStream.readUTF()!=null){
-                update(convertirPartida(inputStream.readUTF()));
-                inputStream.close();
+//    private void actualizarPartida(){
+//        try {
+//            if(inputStream.readUTF()!=null){
+//                update(convertirPartida(inputStream.readUTF()));
+//                inputStream.close();
+//            
+//            }
+//        } catch (IOException ex) {
+//            Logger.getLogger(ServerManager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+   
+    public void startToLisen() throws IOException{
+  
+            PatolliServer cliente1 = new PatolliServer(new ServerSocket(4444),this);
+            System.out.println("Servidor iniciado");
+            cliente1.run();
             
+    }
+        public void enviarPartidaAClientes(Partida partida) {
+        for (PatolliServer cliente : listaClientes) {
+            try {
+                cliente.enviarPartida(partida);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
             }
-        } catch (IOException ex) {
-            Logger.getLogger(ServerManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-}   
-    
+}
