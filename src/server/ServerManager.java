@@ -57,19 +57,15 @@ public class ServerManager extends Thread implements UpdateManager,Filtrar,IServ
         boolean isConnected=true;
         
         while(isConnected){
-            try {
+           
                 if(success){
                     System.out.println("Conexion exitosa con: "+clienteSocket.getPort());
-                    //this.outputStream.writeUTF("Se logro conectar al servidor");
-                    partida_actual.setNumCasillasAspa(10);
-                    partida_actual.setTablero(new Tablero());
-                    enviar(partida_actual);
+                    //enviar(partida_actual);
                     success=false;
                 }
-
-            } catch (IOException ex) {
-                Logger.getLogger(ServerManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                actualizarPartida();
+                
+            
         }
     }
     
@@ -102,4 +98,24 @@ public class ServerManager extends Thread implements UpdateManager,Filtrar,IServ
         }
         return "";
     }
-}
+    public Partida convertirPartida(String partida) {
+        try {
+            return objectMapper.readValue(partida, Partida.class);
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    private void actualizarPartida(){
+        try {
+            if(inputStream.readUTF()!=null){
+                update(convertirPartida(inputStream.readUTF()));
+                inputStream.close();
+            
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ServerManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}   
+    

@@ -4,10 +4,13 @@
  */
 package pipe_and_filters;
 
+import dominio.Partida;
+
 /**
  *
  * @author Hugo Rivera
  */
 public interface Pipe {
-    
+    public Partida getPartida();
+    public void setPartida(Partida partida);
 }

@@ -4,15 +4,26 @@
  */
 package pipe_and_filters;
 
+import dominio.Partida;
+
 /**
  *
  * @author Hugo Rivera
  */
 public class FilterMovimiento extends Filter{
+    
+    Partida partida;
+    public FilterMovimiento(){
+        
+    }
 
     @Override
-    void filtrar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    void filtrar(Pipe input, Pipe output) {
+
+        Partida partida=input.getPartida();
+        output.setPartida(partida);
+        
     }
+    
     
 }

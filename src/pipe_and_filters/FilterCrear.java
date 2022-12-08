@@ -11,8 +11,10 @@ package pipe_and_filters;
 public class FilterCrear extends Filter{
 
     @Override
-    void filtrar() {
+    void filtrar(Pipe input, Pipe output) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    
     
 }

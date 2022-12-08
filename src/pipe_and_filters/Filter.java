@@ -11,8 +11,8 @@ import dominio.Partida;
  * @author Hugo Rivera
  */
 abstract class Filter{
-    abstract void filtrar();
+    abstract void filtrar(Pipe input, Pipe output);
     public void doFilter(Pipe input,Pipe output){
-        filtrar();
+        filtrar(input, output);
     }
 }

@@ -4,10 +4,33 @@
  */
 package pipe_and_filters;
 
+import dominio.Partida;
+
 /**
  *
  * @author Hugo Rivera
  */
-public class UnionPipe {
+public class UnionPipe implements Pipe{
+    private Filter filter;
+    private Partida partida;
+
+    public UnionPipe(Filter filter) {
+        this.filter = filter;
+        
+    }
+
+    @Override
+    public Partida getPartida() {
+        return partida;
+    }
+
+    @Override
+    public void setPartida(Partida partida) {
+        this.partida=partida;
+    }
+
+    
+
+    
     
 }
