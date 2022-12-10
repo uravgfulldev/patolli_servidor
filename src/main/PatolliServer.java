@@ -55,12 +55,12 @@ public class PatolliServer extends Thread{
                     Partida partida;
                     if ((partida = convertirPartida(in.readUTF())) != null) {
                         notificarMovimiento(partida);
-                        out.close();
-                        in.close();
-                        cliente.close();
+                        
                     }
                 } catch (Exception e) {
-                    
+                    out.close();
+                    in.close();
+                    cliente.close();
                             
                       
                         
