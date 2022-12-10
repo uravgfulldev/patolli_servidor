@@ -19,6 +19,7 @@ public class UnionPipe implements Pipe{
         
     }
 
+
     @Override
     public Partida getPartida() {
         return partida;

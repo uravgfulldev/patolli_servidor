@@ -17,10 +17,10 @@ public class FinalPipe implements Pipe{
     }
 
     public FinalPipe(Sink sink) {
-        this.sink = new Sink();
+        this.sink = new Sink(partida);
     }
-    public void sendPartida(){
-        
+    public Sink sink(){
+        return sink;
     }
 
     @Override
@@ -31,5 +31,6 @@ public class FinalPipe implements Pipe{
     @Override
     public void setPartida(Partida partida) {
         this.partida=partida;
+        this.sink=new Sink(partida);
     }
 }

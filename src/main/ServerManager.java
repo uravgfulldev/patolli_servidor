@@ -7,6 +7,7 @@ package main;
 import dominio.IServidor;
 import dominio.Partida;
 import dominio.Tablero;
+import dominio.Ficha;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -25,6 +26,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import pipe_and_filters.FilterMovimiento;
+import pipe_and_filters.FinalPipe;
+import pipe_and_filters.UnionPipe;
 
 /**
  *
@@ -36,6 +40,7 @@ public class ServerManager implements UpdateManager,Filtrar,IServidor{
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
     private Partida partida_actual;
+    private Sink sink;
     private ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     public ServerManager()  throws IOException{
         System.out.println("Constructor");
@@ -44,7 +49,7 @@ public class ServerManager implements UpdateManager,Filtrar,IServidor{
     }
     public void inicializar() throws IOException{
         listaClientes=new ArrayList<>();
-        
+        partida_actual=new Partida();
         startToLisen();
     }
     public int getNumConectados(){
@@ -55,16 +60,29 @@ public class ServerManager implements UpdateManager,Filtrar,IServidor{
     }
     public void accionesConexion(PatolliServer conexion) {
         this.listaClientes.add(conexion);
+        try {
+            enviar(null);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     @Override
     public void updateClientes(PatolliServer conexion) {
         accionesConexion(conexion);
+        
     }
     @Override
     public void update(Partida partida) {
         try {
-            enviar(partida);
+           
+            FilterMovimiento fm=new FilterMovimiento();
+            UnionPipe pipe1=new UnionPipe(fm);
+            FinalPipe pipe2=new FinalPipe(this.sink);
+            pipe1.setPartida(partida);
+            fm.doFilter(pipe1, pipe2);
+            this.sink=pipe2.sink();
+            enviar(sink.notificar());
         } catch (IOException ex) {
             Logger.getLogger(ServerManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -78,7 +96,7 @@ public class ServerManager implements UpdateManager,Filtrar,IServidor{
     @Override
     public void enviar(Partida partida)throws IOException {
             
-            enviarPartidaAClientes(partida);
+                 enviarPartidaAClientes(partida);
            // this.outputStream.flush();
             
     }

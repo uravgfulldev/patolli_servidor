@@ -55,17 +55,16 @@ public class PatolliServer extends Thread{
                     Partida partida;
                     if ((partida = convertirPartida(in.readUTF())) != null) {
                         notificarMovimiento(partida);
+                        out.close();
+                        in.close();
+                        cliente.close();
                     }
                 } catch (Exception e) {
-                    if (e.getMessage().contains("Connection reset") || e.getMessage().contains("socket closed")) {
-                        if (out != null && in != null && cliente != null) {
-                            out.close();
-                            in.close();
-                            cliente.close();
-                        }
-                        break;
-                    }
-                    System.out.println("Error al avanzar ficha: " + e.getMessage());
+                    
+                            
+                      
+                        
+                   
                 }
             }
  

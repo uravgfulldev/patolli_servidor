@@ -19,6 +19,9 @@ public class Ficha {
     private Jugador jugador;
     private boolean enJuego;
 
+    public Ficha() {
+    }
+    
     public Ficha(int numero, Jugador jugador, boolean enJuego) {
         this.numero=numero;
         this.jugador = jugador;

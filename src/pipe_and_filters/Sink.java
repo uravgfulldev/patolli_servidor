@@ -22,7 +22,7 @@ public class Sink {
         this.partida = partida;
     }
     
-    public void notificar(){
-        
+    public Partida notificar(){
+        return partida;
     }
 }
