@@ -54,6 +54,7 @@ public class PatolliServer extends Thread{
                 try {
                     Partida partida;
                     if ((partida = convertirPartida(in.readUTF())) != null) {
+                        System.out.println(partida.getTablero().getCasillas());
                         notificarMovimiento(partida);
                         
                     }

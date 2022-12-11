@@ -29,17 +29,8 @@ public class FilterMovimiento extends Filter{
         
         Partida partida=input.getPartida();
         int movimientos= partida.getCuantasMueve();
-        List<Casilla>casillas=partida.getTablero().getCasillas();
-        
-        int casillaNueva=0;
-        
-        int casillaAnterior = 0;
-        
-       
-            
-            
-        
-        
+        LinkedList<Casilla>casillas=partida.getTablero().getCasillas();
+
         Ficha ficha;
         if (partida.getFichaMovimiento() != null) {
 
@@ -71,7 +62,7 @@ public class FilterMovimiento extends Filter{
             casillas.get(casillaActual.getNumero()).setFicha(null);
             casillas.get(destino.getNumero()).setFicha(ficha2);
             
-            partida.getTablero().setCasillas((LinkedList<Casilla>) casillas);
+            partida.getTablero().setCasillas(casillas);
             
         
             }
@@ -85,7 +76,7 @@ public class FilterMovimiento extends Filter{
                             casillaPropia.setFicha(ficha);
                             casillas.set(casillas.indexOf(casillaPropia), casillaPropia);
                             
-                            partida.getTablero().setCasillas((LinkedList<Casilla>) casillas);
+                            partida.getTablero().setCasillas(casillas);
                            
                             jugadorTurno.setMeterFicha(false);
                             
