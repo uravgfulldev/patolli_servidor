@@ -61,11 +61,7 @@ public class PatolliServer extends Thread{
                 } catch (Exception e) {
                     out.close();
                     in.close();
-                    cliente.close();
-                            
-                      
-                        
-                   
+                    cliente.close();  
                 }
             }
  
